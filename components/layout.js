@@ -5,7 +5,7 @@ const Layout = ({children}) => {
             <Navbar />
             <div className="grid grid-cols-home-sm sm:grid-cols-home-md md:grid-cols-home-lg">
                 <div className=""></div>
-                <div className="content white-card">
+                <div className="content">
                     {children}
                 </div>
                 <div className=""></div>

@@ -4,7 +4,13 @@ module.exports = {
         "./components/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            gridTemplateColumns: {
+                'home-lg': '150px auto 150px',
+                'home-md': '50px auto 50px',
+                'home-sm': '30px auto 30px',
+            }
+        },
     },
     plugins: [],
 }
