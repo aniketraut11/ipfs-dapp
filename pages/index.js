@@ -53,7 +53,7 @@ export default function Home() {
             </> : <></>}
             <div className="grid grid-cols-1 md:grid-cols-2">
                 {urlArr.length !== 0
-                ? urlArr.map((el) => <ImageCard src={el} />)
+                ? urlArr.map((el) => <ImageCard src={el} key={null}/>)
                 : <></>}
             </div>
         </>
