@@ -1,22 +1,61 @@
 import { useWeb3React } from "@web3-react/core";
+import { create } from "ipfs-http-client";
+import { useState } from "react";
+import ImageCard from "../components/imageCard";
+
+const client = create('https://ipfs.infura.io:5001/api/v0');
 
 export default function Home() {
     const { active, account} = useWeb3React()
+    const [file, setFile] = useState(null);
+    const [urlArr, setUrlArr] = useState([]);
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const created = await client.add(file);
+        const url = `https://ipfs.infura.io/ipfs/${created.path}`;
+        setUrlArr(prev => [...prev, url]);   
+        console.log(url);   
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+  
+    const retrieveFile = (e) => {
+      const data = e.target.files[0];
+      const reader = new window.FileReader();
+      reader.readAsArrayBuffer(data);
+      reader.onloadend = () => {
+        setFile(Buffer(reader.result));
+        console.log("Buffer data: ", Buffer(reader.result));
+      }
+  
+      e.preventDefault();  
+    }
+  
 
     return (
         <>
             <div className="flex flex-col items-start white-card">
-                <h1 className="title self-center"> Tittle </h1>
+                <h1 className="title self-center"> IPFS Image Sharing App </h1>
             </div>
             { active? <>
             <div className="flex flex-col items-center white-card">
                 <span className="text-lg"> Account: </span> 
                 <span className="mb-2"> {account} </span>
                 
-                <input className="form-control block text-base font-normal p-1 mb-2 rounded-md border border-gray-500" type="file" id="formFile" />
-                <div className="button mb-2"> Upload</div>
+                <form className="flex flex-col items-center" onSubmit={handleSubmit}>
+                    <input className="form-control block text-base font-normal p-1 mb-2 rounded-md border border-gray-500" type="file" id="formFile" onChange={retrieveFile}/>
+                    <button type="submit" className="button mb-2"> Upload</button>
+                </form>
             </div>
             </> : <></>}
+            <div className="grid grid-cols-1 md:grid-cols-2">
+                {urlArr.length !== 0
+                ? urlArr.map((el) => <ImageCard src={el} />)
+                : <></>}
+            </div>
         </>
         )
     }
