@@ -112,7 +112,7 @@ export default function Home({ images }) {
 } 
 
 export async function getStaticProps() {
-    const res = await fetch('https://ipfs-dapp.vercel.app/api/cache')
+    const res = await fetch('http://localhost:3000/api/cache')
     const {images} = await res.json()
     
     // console.log("log from getStaticProps: ", images)
