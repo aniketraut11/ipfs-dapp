@@ -10,7 +10,7 @@ const client = create('https://ipfs.infura.io:5001/api/v0');
 export default function Home({ images }) {
     const { active, account, library: provider} = useWeb3React()
     const [file, setFile] = useState(null);
-    const [imgArr, setImgObj] = useState([]);
+    const [imgArr, setImgObj] = useState(images);
     // console.log("imgArr: ", imgArr)
     const [loading, setLoading] = useState(false);
 
@@ -40,7 +40,7 @@ export default function Home({ images }) {
         try {
             const body = JSON.stringify({ url:url, uploader:uploader})
             // console.log(body)
-            const res = await fetch('/api/cache', {
+            const res = await fetch('https://ipfs-dapp.vercel.app/api/cache', {
                 method: 'POST',
                 headers: {
                   'Accept': 'application/json',
@@ -111,15 +111,15 @@ export default function Home({ images }) {
     )
 } 
 
-// export async function getStaticProps() {
-//     const res = await fetch('http://localhost:3000/api/cache')
-//     const {images} = await res.json()
+export async function getStaticProps() {
+    const res = await fetch('https://ipfs-dapp.vercel.app/api/cache')
+    const {images} = await res.json()
     
-//     // console.log("log from getStaticProps: ", images)
+    // console.log("log from getStaticProps: ", images)
 
-//     return {
-//       props: {
-//         images
-//       },
-//     }
-// }
+    return {
+      props: {
+        images
+      },
+    }
+}
