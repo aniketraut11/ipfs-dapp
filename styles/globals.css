@@ -22,6 +22,10 @@
     @apply p-1 bg-white bg-opacity-50 rounded-md shadow-md cursor-pointer hover:font-medium;
 }
 
+.button-disabled {
+    @apply p-1 bg-gray-400 bg-opacity-50 rounded-md shadow-md font-light;
+}
+
 input[type=file]::file-selector-button {
     @apply button border-none;
 }

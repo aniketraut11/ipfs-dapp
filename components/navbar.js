@@ -13,7 +13,14 @@ const Navbar = () => {
     async function connect() {
         if (typeof window.ethereum !== "undefined") {
             try {
-                await activate(injected)
+                const chainId = await injected.getChainId();
+                console.log(chainId)
+                if (chainId !== "0x4") {
+                    window.alert("Change the network to Rinkeby");
+                    throw new Error("Change network to Rinkeby");
+                } else {
+                    await activate(injected)
+                }
             } catch (e) {
                 console.log(e);
             }
@@ -25,7 +32,7 @@ const Navbar = () => {
         <span className="ml-2 mr-auto text-2xl font-bold"> IPFS DApp</span>
         {active?
             <div className="mr-2"> { shrotAddr() } </div> :
-            <button className="mr-2 nav-item button" onClick={connect}>Connect</button>
+            <button className="button mr-2 text-lg" onClick={connect}>Connect</button>
         }
         </div>
         )
