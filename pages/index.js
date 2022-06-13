@@ -1,7 +1,10 @@
 import { useWeb3React } from "@web3-react/core";
 import { create } from "ipfs-http-client";
-import { useState } from "react";
 import ImageCard from "../components/imageCard";
+import contractInteractions from "../contractInteraction/contractInteractions";
+import React, {useState } from "react";
+import { BigNumber, Contract, providers, utils } from "ethers";
+
 
 const client = create('https://ipfs.infura.io:5001/api/v0');
 
@@ -9,14 +12,14 @@ export default function Home() {
     const { active, account} = useWeb3React()
     const [file, setFile] = useState(null);
     const [urlArr, setUrlArr] = useState([]);
-  
+
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
         const created = await client.add(file);
         const url = `https://ipfs.infura.io/ipfs/${created.path}`;
         setUrlArr(prev => [...prev, url]);   
-        console.log(url);   
+        console.log(url);  
       } catch (error) {
         console.log(error.message);
       }
@@ -34,7 +37,6 @@ export default function Home() {
       e.preventDefault();  
     }
   
-
     return (
         <>
             <div className="flex flex-col items-start white-card">
@@ -56,6 +58,30 @@ export default function Home() {
                 ? urlArr.map((el) => <ImageCard src={el} />)
                 : <></>}
             </div>
+
+          <div>
+            <h1 className="title self-center" >Welcome to Image Sharing DAPP!</h1>
+            <div className="title self-center">
+              You can mint tokens here!
+            </div>
+            {active ? (
+              <div>
+                <div >
+                  {/* Format Ether helps us in converting a BigNumber to string */}
+                  You have minted {utils.formatEther(contractInteractions.balanceOfTokens)} Crypto
+                  Dev Tokens
+                </div>
+                <div >
+                  {/* Format Ether helps us in converting a BigNumber to string */}
+                  Overall {utils.formatEther(contractInteractions.tokensMinted)}/10000 have been minted!!!
+                </div>
+                {renderButton()}
+              </div>
+              ) : (<></>)}
+          </div>
+
+
+
         </>
         )
     }
