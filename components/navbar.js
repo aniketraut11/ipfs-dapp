@@ -15,9 +15,9 @@ const Navbar = () => {
             try {
                 const chainId = await injected.getChainId();
                 console.log(chainId)
-                if (chainId !== "0x4") {
-                    window.alert("Change the network to Rinkeby");
-                    throw new Error("Change network to Rinkeby");
+                if (chainId !== "0x13881") {
+                    window.alert("Change the network to Polygon Mumbai");
+                    throw new Error("Change network to Polygon Mumbai");
                 } else {
                     await activate(injected)
                 }
